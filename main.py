@@ -231,7 +231,7 @@ def handle_move(player, objects):
             scroll += 5
 
     # fall off the game scene then die
-    if player.rect.y > WINDOW_HEIGHT + 10:
+    if player.rect.y > WINDOW_HEIGHT + 10 and not finished:
         player.make_hit()
         death_trigger = True
         death_time = pygame.time.get_ticks()
@@ -320,11 +320,11 @@ def GAME_SCENE(window):
         draw(window, bg_images, bg_width, player, objects, firework_obj, offset_x)
         mic_icon.draw(window)
         pygame.display.update()
+
         if not death_trigger:
             handle_move(player, objects)
-        elif pygame.time.get_ticks() - death_time > 1500:
+        elif death_trigger and pygame.time.get_ticks() - death_time > 1500:
             current_scene = "RESTART_SCENE"
-
         if finished and pygame.time.get_ticks() - finish_time > 1500:
             current_scene = "RESTART_SCENE"
 
@@ -415,7 +415,7 @@ def SETTING_SCENE():
     background_image = pygame.image.load("./assets/Background/Whole_Background.png").convert()
     background_image = pygame.transform.scale2x(background_image)
 
-    label_surface = FONT.render("Sensitivity", True, (255, 255, 255))
+    label_surface = FONT.render("Intensity", True, (255, 255, 255))
 
     label_position = (slider.x + slider.width // 2 - label_surface.get_width() // 2,
                       slider.y - label_surface.get_height() - 50)
